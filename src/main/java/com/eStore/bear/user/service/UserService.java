@@ -18,6 +18,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordService passwordService;
+
     public ResponseEntity<User> saveUser(User user) {
 
         Optional<User> userNameFound = userRepository.findByName(user.getName());
@@ -28,7 +31,7 @@ public class UserService {
                 if (!userMobileFound.isPresent()) {
                     user.setId(UUID.randomUUID().toString());
                     user.setInsertDate(new Date());
-
+                    user.setPassword(passwordService.securePassword(user.getPassword()));
                     User userSaved = userRepository.save(user);
                     return ResponseEntity.status(HttpStatus.CREATED).body(userSaved);
                 }

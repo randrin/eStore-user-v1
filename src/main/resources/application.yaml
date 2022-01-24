@@ -14,3 +14,17 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL55Dialect
+      javax:
+        persistence:
+          validation:
+            mode: none
+password:
+  hashing:
+    algo:
+      argon2:
+        type: 1
+        saltLength: 16
+        hashLength: 32
+        iterations: 4
+        memory: 65586
+        parallelism: 2
