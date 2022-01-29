@@ -1,6 +1,7 @@
 package com.eStore.bear.user.exception.handler;
 
 import com.eStore.bear.user.exception.UserDataValidationException;
+import com.eStore.bear.user.exception.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,19 @@ public class UserServiceExceptionHandler extends ResponseEntityExceptionHandler 
 
         apiError.setTimestamp(LocalDateTime.now());
         apiError.setStatus(HttpStatus.BAD_REQUEST);
+        apiError.setErrors(Arrays.asList(exception.getMessage()));
+        apiError.setPath(request.getDescription(true));
+
+        return new ResponseEntity(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler({UserNotFoundException.class})
+    ResponseEntity<?> UserNotFoundHandler(Exception exception, ServletWebRequest request) {
+
+        ApiError apiError = new ApiError();
+
+        apiError.setTimestamp(LocalDateTime.now());
+        apiError.setStatus(HttpStatus.NOT_FOUND);
         apiError.setErrors(Arrays.asList(exception.getMessage()));
         apiError.setPath(request.getDescription(true));
 

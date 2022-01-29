@@ -5,10 +5,7 @@ import com.eStore.bear.user.service.UserService;
 import com.eStore.bear.user.utils.UserEndpoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,5 +20,10 @@ public class UserController {
     public ResponseEntity<User> saveUser(@Valid @RequestBody User user) {
 
         return userService.saveUser(user);
+    }
+
+    @GetMapping(UserEndpoints.FIND_USER)
+    public ResponseEntity<User> findUserByEmail(@RequestParam String email) {
+        return userService.findUserByEmail(email);
     }
 }

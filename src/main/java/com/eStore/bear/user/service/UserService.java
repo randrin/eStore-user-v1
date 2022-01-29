@@ -2,6 +2,7 @@ package com.eStore.bear.user.service;
 
 import com.eStore.bear.user.dto.User;
 import com.eStore.bear.user.exception.UserDataValidationException;
+import com.eStore.bear.user.exception.UserNotFoundException;
 import com.eStore.bear.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,5 +41,14 @@ public class UserService {
             throw new UserDataValidationException("User already exist with " + user.getEmail());
         }
         throw new UserDataValidationException("User already exist with " + user.getName());
+    }
+
+    public ResponseEntity<User> findUserByEmail(String email) {
+        Optional<User> userEmailFound = userRepository.findByEmail(email);
+
+        if(!userEmailFound.isPresent()) {
+            throw new UserNotFoundException("User not found with the email " + email);
+        }
+        return ResponseEntity.status(HttpStatus.FOUND).body(userEmailFound.get());
     }
 }
